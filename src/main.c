@@ -1,11 +1,5 @@
-#include "pebble.h"
-
-// This is an accelerometer sampling rate
-// Available: 10, 25, 50 or 100 hz
-#define SAMPLING_RATE ACCEL_SAMPLING_10HZ
-#define NUM_SAMPLES 2
-#define ACCEL_THRESHOLD 1500
-#define mod(x) (x>0?x:-x)
+#include <pebble.h>
+#include "accel.h"
 
 static Window *window;
 
@@ -143,20 +137,6 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 	text_layer_set_text(temperature_layer, NOTIFY_TEXTS[new_tuple->value->uint8]);
 }
 
-void accel_handler(AccelData *data, uint32_t num_samples) {
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "%d %ld %d %d %d", data->did_vibrate, (long)data->timestamp,
-			data->x, data->y, data->z);
-	if(data->did_vibrate)
-	{} // don't trust such data!
-
-	if(mod(data->x) > ACCEL_THRESHOLD ||
-			mod(data->y) > ACCEL_THRESHOLD ||
-			mod(data->z) > ACCEL_THRESHOLD) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "USER FALLEN DOWN!");
-		vibes_double_pulse();
-	}
-}
-
 void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
@@ -247,8 +227,7 @@ static void init() {
 	const int outbound_size = 16;
 	app_message_open(inbound_size, outbound_size);
 
-	accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
-	accel_service_set_sampling_rate(SAMPLING_RATE);
+	accel_init();
 
 	window = window_create();
 	//  window_set_background_color(window, GColorBlack);
@@ -265,8 +244,6 @@ static void init() {
 static void deinit(void) {
 	app_sync_deinit(&sync);
 	app_message_deregister_callbacks();
-
-	accel_data_service_unsubscribe();
 
 	if(window){
 		window_destroy(window);
