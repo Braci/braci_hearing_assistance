@@ -1,4 +1,5 @@
 #include "countdown.h"
+#include "accel.h"
 
 static Window *wnd;
 static TextLayer *tl_head, *tl_count, *tl_bottom;
@@ -45,6 +46,8 @@ static void click_config_provider(void *ctx) {
 }
 
 static void window_load(Window *wnd) {
+	accel_pause();
+
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "wndload");
 	Layer *root = window_get_root_layer(wnd);
 
@@ -85,6 +88,8 @@ static void window_unload(Window *wnd) {
 	text_layer_destroy(tl_head);
 	text_layer_destroy(tl_count);
 	text_layer_destroy(tl_bottom);
+
+	accel_unpause();
 }
 
 void countdown_start() {
