@@ -10,11 +10,13 @@ void accel_handler(AccelData *data, uint32_t num_samples) {
 }
 
 static void init() {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Worker: init()");
 	accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
 	accel_service_set_sampling_rate(SAMPLING_RATE);
 }
 
 static void deinit() {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Worker: deinit()");
 	accel_data_service_unsubscribe();
 }
 
