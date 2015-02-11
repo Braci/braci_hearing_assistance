@@ -1,0 +1,121 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Braci Ltd.",
+    "longName": "Braci - Hearing Assistance ",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/Police.png",
+                "name": "IMAGE_POLICE",
+                "type": "png"
+            },
+            {
+                "file": "images/Microwave.png",
+                "name": "IMAGE_MICROWAVE",
+                "type": "png"
+            },
+            {
+                "file": "images/Train.png",
+                "name": "IMAGE_TRAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/Traffic.png",
+                "name": "IMAGE_TRAFFIC",
+                "type": "png"
+            },
+            {
+                "file": "images/Calling you.png",
+                "name": "IMAGE_CALLINGYOU",
+                "type": "png"
+            },
+            {
+                "file": "images/Eat TIme.png",
+                "name": "IMAGE_EATTIME",
+                "type": "png"
+            },
+            {
+                "file": "images/SOS.png",
+                "name": "IMAGE_SOS",
+                "type": "png"
+            },
+            {
+                "file": "images/Wake up.png",
+                "name": "IMAGE_WAKEUP",
+                "type": "png"
+            },
+            {
+                "file": "images/Bed Time.png",
+                "name": "IMAGE_BEDTIME",
+                "type": "png"
+            },
+            {
+                "file": "images/No.png",
+                "name": "IMAGE_NO",
+                "type": "png"
+            },
+            {
+                "file": "images/Yes.png",
+                "name": "IMAGE_YES",
+                "type": "png"
+            },
+            {
+                "file": "images/Main Screen Logo.png",
+                "name": "IMAGE_EMPTY",
+                "type": "png"
+            },
+            {
+                "file": "images/Icon.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU",
+                "type": "png"
+            },
+            {
+                "file": "images/Thief Alarm.png",
+                "name": "IMAGE_THIEFALARM",
+                "type": "png"
+            },
+            {
+                "file": "images/Doorbell.png",
+                "name": "IMAGE_DOORBELL",
+                "type": "png"
+            },
+            {
+                "file": "images/Fire Alarm.png",
+                "name": "IMAGE_FIREALARM",
+                "type": "png"
+            },
+            {
+                "file": "images/Clock Alarm.png",
+                "name": "IMAGE_ALARMCLOCK",
+                "type": "png"
+            },
+            {
+                "file": "images/Car Horn.png",
+                "name": "IMAGE_CARHORN",
+                "type": "png"
+            },
+            {
+                "file": "images/Baby Crying .png",
+                "name": "IMAGE_BABYCRYING",
+                "type": "png"
+            },
+            {
+                "file": "images/Telephone Ringing.png",
+                "name": "IMAGE_TELEPHONE",
+                "type": "png"
+            }
+        ]
+    },
+    "shortName": "Braci - Hearing Assistance ",
+    "uuid": "69721c7e-69ef-40eb-a687-5649124ab141",
+    "versionCode": 1,
+    "versionLabel": "1.4",
+    "watchapp": {
+        "watchface": false
+    }
+}
