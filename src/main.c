@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "accel.h"
+#include "countdown.h"
 
 static Window *window;
 
@@ -227,6 +228,7 @@ static void init() {
 	const int outbound_size = 16;
 	app_message_open(inbound_size, outbound_size);
 
+	countdown_init();
 	accel_init();
 
 	window = window_create();
@@ -244,6 +246,9 @@ static void init() {
 static void deinit(void) {
 	app_sync_deinit(&sync);
 	app_message_deregister_callbacks();
+
+	accel_deinit();
+	countdown_deinit();
 
 	if(window){
 		window_destroy(window);
