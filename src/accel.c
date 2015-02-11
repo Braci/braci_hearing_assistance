@@ -14,10 +14,29 @@ static void accel_handler(AccelData *data, uint32_t num_samples) {
 	}
 }
 
-void accel_init() {
+static bool is_started;
+void accel_start() {
 	accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
 	accel_service_set_sampling_rate(SAMPLING_RATE);
+	is_started = true;
+}
+void accel_stop() {
+	is_started = false;
+	accel_data_service_unsubscribe();
+}
+
+void accel_pause() {
+	if(is_started)
+		accel_data_service_unsubscribe(); // but don't toggle is_started
+}
+void accel_unpause() {
+	if(is_started)
+		accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
+}
+
+void accel_init() {
+	accel_start();
 }
 void accel_deinit() {
-	accel_data_service_unsubscribe();
+	accel_stop();
 }
