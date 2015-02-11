@@ -6,15 +6,42 @@ static int count;
 static char buf[4];
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-	count--;
-	snprintf(buf, sizeof(buf), "%d", count);
-	text_layer_set_text(tl_count, buf);
+	bool minus = false;
+	if(count > 0) {
+		count--;
+		snprintf(buf, sizeof(buf), "%d", count);
+		text_layer_set_text(tl_count, buf);
+	} else {
+		count++;
+		minus = true;
+	}
 
 	if(count == 0) {
-		tick_timer_service_unsubscribe();
-		vibes_double_pulse();
-		window_stack_remove(wnd, true);
+		if(minus) {
+			tick_timer_service_unsubscribe();
+			window_stack_remove(wnd, true);
+		} else { // countdown done, do action and wait for delay
+			vibes_double_pulse();
+			// TODO: action here
+
+			count = -COUNTDOWN_ACTION_DELAY;
+			text_layer_set_text(tl_head, "Sending SOS now");
+			text_layer_set_text(tl_count, "");
+			text_layer_set_text(tl_bottom, "");
+		}
 	}
+}
+
+static void button_handler(ClickRecognizerRef rec, void *ctx) {
+	count = -COUNTDOWN_ACTION_DELAY;
+	text_layer_set_text(tl_head, "Cancelled");
+	text_layer_set_text(tl_count, "");
+	text_layer_set_text(tl_bottom, "");
+}
+
+static void click_config_provider(void *ctx) {
+	for(int btn = 0; btn<4; btn++)
+		window_single_click_subscribe(btn, button_handler);
 }
 
 static void window_load(Window *wnd) {
@@ -47,6 +74,8 @@ static void window_load(Window *wnd) {
 	text_layer_set_text_alignment(tl_bottom, GTextAlignmentCenter);
 	text_layer_set_text(tl_bottom, "seconds");
 	layer_add_child(root, text_layer_get_layer(tl_bottom));
+
+	window_set_click_config_provider(wnd, click_config_provider);
 
 	tick_timer_service_subscribe(SECOND_UNIT, tick_handler);
 }
