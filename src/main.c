@@ -223,6 +223,10 @@ static void init() {
 	app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
 		sync_tuple_changed_callback, sync_error_callback, NULL);
 
+	const int inbound_size = 64;
+	const int outbound_size = 16;
+	app_message_open(inbound_size, outbound_size);
+
 	window = window_create();
 	//  window_set_background_color(window, GColorBlack);
 	window_set_fullscreen(window, true);
@@ -231,16 +235,13 @@ static void init() {
 		.unload = window_unload
 	});
 
-	const int inbound_size = 64;
-	const int outbound_size = 16;
-	app_message_open(inbound_size, outbound_size);
-
 	const bool animated = true;
 	window_stack_push(window, animated);
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "init: done");
 }
 static void deinit(void) {
 	app_sync_deinit(&sync);
+	app_message_deregister_callbacks();
 
 	if(window){
 		window_destroy(window);
