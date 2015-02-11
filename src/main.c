@@ -152,7 +152,7 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 }
 
 
-void any_button_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
+void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
 	Tuplet symbol_tuple = TupletInteger(0, 1);
@@ -183,9 +183,9 @@ void up_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 }
 
 void click_config_provider(void *context) {
-	window_single_click_subscribe(BUTTON_ID_BACK, (ClickHandler) any_button_single_click_handler);
-	window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) any_button_single_click_handler);
-	window_single_click_subscribe(BUTTON_ID_SELECT, (ClickHandler) any_button_single_click_handler);
+	window_single_click_subscribe(BUTTON_ID_BACK, any_button_single_click_handler);
+	window_single_click_subscribe(BUTTON_ID_DOWN, any_button_single_click_handler);
+	window_single_click_subscribe(BUTTON_ID_SELECT, any_button_single_click_handler);
 
 	window_single_click_subscribe(BUTTON_ID_UP, up_button_single_click_handler);
 }
