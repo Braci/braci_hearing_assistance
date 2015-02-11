@@ -171,6 +171,7 @@ void select_single_click_handler(ClickRecognizerRef recognizer, Window *window) 
 }
 
 void click_config_provider(void *context) {
+  window_single_click_subscribe(BUTTON_ID_BACK, (ClickHandler) select_single_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) select_single_click_handler);
 }
 
@@ -185,7 +186,6 @@ static void window_load(Window *window) {
   bitmap_layer_set_alignment(image_layer, GAlignCenter);
   bitmap_layer_set_compositing_mode(image_layer, GCompOpAssign);
   layer_add_child(window_layer, bitmap_layer_get_layer(image_layer));
-
 
   temperature_layer = text_layer_create(GRect(0, 130, 144, 38));
   text_layer_set_text_color(temperature_layer, GColorWhite);
