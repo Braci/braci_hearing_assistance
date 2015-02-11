@@ -177,6 +177,7 @@ void click_config_provider(void *context) {
 }
 
 static void window_load(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_load: hello");
   window_layer = window_get_root_layer(window);
   // This needs to be deinited on app exit which is when the event loop ends
   image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EMPTY);
@@ -195,16 +196,12 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(temperature_layer, GTextAlignmentCenter);
   text_layer_set_text(temperature_layer, "");
   layer_add_child(window_layer, text_layer_get_layer(temperature_layer));
-  Tuplet initial_values[] = {
-    TupletInteger(NOTIFY_ICON_KEY, (uint8_t) 100),
-  };
-  app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
-      sync_tuple_changed_callback, sync_error_callback, NULL);
 
   window_set_click_config_provider(window, click_config_provider);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_load: done");
 }
 static void window_unload() {
-  app_sync_deinit(&sync);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_unload: hello");
 
   if (image) {
     gbitmap_destroy(image);
@@ -212,9 +209,19 @@ static void window_unload() {
 
   text_layer_destroy(temperature_layer);
   bitmap_layer_destroy(image_layer);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_unload: done");
 }
 
 static void init() {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "init: hello");
+
+  // Initializing app_sync:
+  Tuplet initial_values[] = {
+    TupletInteger(NOTIFY_ICON_KEY, (uint8_t) 100),
+  };
+  app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
+      sync_tuple_changed_callback, sync_error_callback, NULL);
+
   window = window_create();
 //  window_set_background_color(window, GColorBlack);
   window_set_fullscreen(window, true);
@@ -229,16 +236,24 @@ static void init() {
 
   const bool animated = true;
   window_stack_push(window, animated);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "init: done");
 }
 static void deinit(void) {
+	app_sync_deinit(&sync);
+
 	if(window){
 		window_destroy(window);
 	}
 }
 
 int main(void) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "main: before init()");
   init();
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "main: before app_event_loop()");
+
   app_event_loop();
 
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "main: before deinit()");
   deinit();
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "main: done");
 }
