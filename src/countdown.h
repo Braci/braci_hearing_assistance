@@ -1,5 +1,5 @@
 #pragma once
-#include <pebble.c>
+#include <pebble.h>
 
 #define COUNTDOWN_SECONDS 10
 
