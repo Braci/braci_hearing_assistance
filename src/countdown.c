@@ -24,7 +24,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 			vibes_double_pulse();
 			// TODO: action here
 
-			count = -COUNTDOWN_ACTION_DELAY;
+			count = -COUNTDOWN_MESSAGE_DELAY;
 			text_layer_set_text(tl_head, "Sending SOS now");
 			text_layer_set_text(tl_count, "");
 			text_layer_set_text(tl_bottom, "");
@@ -33,7 +33,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 
 static void button_handler(ClickRecognizerRef rec, void *ctx) {
-	count = -COUNTDOWN_ACTION_DELAY;
+	count = -COUNTDOWN_MESSAGE_DELAY;
 	text_layer_set_text(tl_head, "Cancelled");
 	text_layer_set_text(tl_count, "");
 	text_layer_set_text(tl_bottom, "");
