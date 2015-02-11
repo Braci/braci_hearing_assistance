@@ -126,8 +126,7 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 		window_stack_remove(window, animated);
 		return;
 	}
-	
-	
+
 	for (i = 0; i < ARRAY_LENGTH(segments); i++)
 	{
 		segments[i] = VIBRATION_PATTERNS[new_tuple->value->uint8][i % 2];
@@ -150,7 +149,7 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 }
 
 
-void select_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
+void any_button_single_click_handler(ClickRecognizerRef recognizer, Window *window) {
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
   Tuplet symbol_tuple = TupletInteger(0, 1);
@@ -171,8 +170,10 @@ void select_single_click_handler(ClickRecognizerRef recognizer, Window *window) 
 }
 
 void click_config_provider(void *context) {
-  window_single_click_subscribe(BUTTON_ID_BACK, (ClickHandler) select_single_click_handler);
-  window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) select_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_BACK, (ClickHandler) any_button_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) any_button_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_SELECT, (ClickHandler) any_button_single_click_handler);
+  window_single_click_subscribe(BUTTON_ID_UP, (ClickHandler) any_button_single_click_handler);
 }
 
 static void window_load(Window *window) {
