@@ -3,7 +3,9 @@
 // This is an accelerometer sampling rate
 // Available: 10, 25, 50 or 100 hz
 #define SAMPLING_RATE ACCEL_SAMPLING_10HZ
-#define NUM_SAMPLES 10
+#define NUM_SAMPLES 2
+#define ACCEL_THRESHOLD 1500
+#define mod(x) (x>0?x:-x)
 
 static Window *window;
 
@@ -144,6 +146,15 @@ static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tup
 void accel_handler(AccelData *data, uint32_t num_samples) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "%d %ld %d %d %d", data->did_vibrate, (long)data->timestamp,
 			data->x, data->y, data->z);
+	if(data->did_vibrate)
+	{} // don't trust such data!
+
+	if(mod(data->x) > ACCEL_THRESHOLD ||
+			mod(data->y) > ACCEL_THRESHOLD ||
+			mod(data->z) > ACCEL_THRESHOLD) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "USER FALLEN DOWN!");
+		vibes_double_pulse();
+	}
 }
 
 void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
