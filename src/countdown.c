@@ -24,15 +24,15 @@ static void window_load(Window *wnd) {
 	count = COUNTDOWN_SECONDS;
 	snprintf(buf, sizeof(buf), "%02d", count);
 
-	tl_head = text_layer_create(GRect(0,0,144,70));
+	tl_head = text_layer_create(GRect(0,0,144,60));
 	text_layer_set_background_color(tl_head, GColorBlack);
 	text_layer_set_text_color(tl_head, GColorWhite);
-	text_layer_set_font(tl_head, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+	text_layer_set_font(tl_head, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
 	text_layer_set_text_alignment(tl_head, GTextAlignmentCenter);
 	text_layer_set_text(tl_head, "Will send SOS in");
 	layer_add_child(root, text_layer_get_layer(tl_head));
 
-	tl_count = text_layer_create(GRect(0,70,144,70));
+	tl_count = text_layer_create(GRect(0,60,144,60));
 	text_layer_set_background_color(tl_count, GColorBlack);
 	text_layer_set_text_color(tl_count, GColorWhite);
 	text_layer_set_font(tl_count, fonts_get_system_font(FONT_KEY_ROBOTO_BOLD_SUBSET_49));
@@ -40,10 +40,10 @@ static void window_load(Window *wnd) {
 	text_layer_set_text(tl_count, buf);
 	layer_add_child(root, text_layer_get_layer(tl_count));
 
-	tl_bottom = text_layer_create(GRect(0,140,144,20));
+	tl_bottom = text_layer_create(GRect(0,120,144,40));
 	text_layer_set_background_color(tl_bottom, GColorBlack);
 	text_layer_set_text_color(tl_bottom, GColorWhite);
-	text_layer_set_font(tl_bottom, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+	text_layer_set_font(tl_bottom, fonts_get_system_font(FONT_KEY_GOTHIC_28));
 	text_layer_set_text_alignment(tl_bottom, GTextAlignmentCenter);
 	text_layer_set_text(tl_bottom, "seconds");
 	layer_add_child(root, text_layer_get_layer(tl_bottom));
