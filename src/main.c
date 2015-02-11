@@ -113,6 +113,8 @@ static void sync_error_callback(DictionaryResult dict_error, AppMessageResult ap
 }
 
 static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Got new tuple: %d", new_tuple->value->uint8);
+
 	unsigned int i = 0;
 	if(new_tuple->value->uint8 == 100)
 	{
@@ -215,6 +217,8 @@ static void window_unload() {
 
 static void init() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "init: hello");
+
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Launch reason: %d", launch_reason());
 
 	// Initializing app_sync:
 	Tuplet initial_values[] = {
