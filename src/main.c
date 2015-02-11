@@ -172,11 +172,22 @@ void any_button_single_click_handler(ClickRecognizerRef recognizer, Window *wind
 	window_stack_remove(window, animated);
 }
 
+void up_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
+	if(app_worker_is_running()) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Stopping worker");
+		app_worker_kill();
+	} else {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Launching worker");
+		app_worker_launch();
+	}
+}
+
 void click_config_provider(void *context) {
 	window_single_click_subscribe(BUTTON_ID_BACK, (ClickHandler) any_button_single_click_handler);
 	window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) any_button_single_click_handler);
 	window_single_click_subscribe(BUTTON_ID_SELECT, (ClickHandler) any_button_single_click_handler);
-	window_single_click_subscribe(BUTTON_ID_UP, (ClickHandler) any_button_single_click_handler);
+
+	window_single_click_subscribe(BUTTON_ID_UP, up_button_single_click_handler);
 }
 
 static void window_load(Window *window) {
