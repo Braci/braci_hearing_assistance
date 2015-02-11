@@ -15,8 +15,6 @@
 
 #include "pebble.h"
 
-#include "worker.h"
-
 static Window *window;
 
 static BitmapLayer *image_layer;
@@ -222,8 +220,6 @@ static void init() {
 
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Launch reason: %d", launch_reason());
 
-	worker_init();
-
 	// Initializing app_sync:
 	Tuplet initial_values[] = {
 		TupletInteger(NOTIFY_ICON_KEY, (uint8_t) 100),
@@ -254,8 +250,6 @@ static void deinit(void) {
 	if(window){
 		window_destroy(window);
 	}
-
-	worker_deinit();
 }
 
 int main(void) {
