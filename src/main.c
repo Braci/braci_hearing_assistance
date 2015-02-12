@@ -39,6 +39,9 @@ static void sync_error_callback(DictionaryResult dict_error, AppMessageResult ap
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sync Error: %d", app_message_error);
 }
 
+static void inbox_received_callback(DictionaryIterator *iter, void *ctx) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Inbox received!");
+}
 static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Got new tuple: %d", new_tuple->value->uint8);
 
@@ -166,6 +169,7 @@ static void init() {
 	const int inbound_size = 64;
 	const int outbound_size = 16;
 	app_message_open(inbound_size, outbound_size);
+	app_message_register_inbox_received(inbox_received_callback);
 
 	splash_init();
 	countdown_init();
