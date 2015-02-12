@@ -44,6 +44,10 @@ static char NOTIFY_TEXTS[][30] = {
 	"Police",
 };
 
+static const uint16_t PAGING_INDICES[] = {
+	7, 8, 9, 10, 11, 12, 13,
+};
+
 static const uint32_t VIBRATION_PATTERNS[18][2] = { 
 	{ 300, 100 }, // FIRE_ALARM 0
 	{ 300, 500 }, // DOOR_BELL 1
