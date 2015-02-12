@@ -190,7 +190,6 @@ static void init() {
 		case APP_LAUNCH_PHONE:
 			timer = app_timer_register(1000, timer_callback, NULL);
 			// either incoming message or launched from debug console
-			window_stack_push(window, true);
 			break;
 
 		case APP_LAUNCH_WORKER:
@@ -221,6 +220,10 @@ int main(void) {
 	init();
 
 	app_event_loop();
+	while(timer) { // launch not finished yet! so if evt loop stopped (because of no windows are active), relaunch it
+		psleep(10);
+		app_event_loop();
+	}
 
 	deinit();
 }
