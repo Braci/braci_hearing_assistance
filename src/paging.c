@@ -4,19 +4,26 @@ static Window *wnd;
 static MenuLayer *menu;
 
 static void menu_draw_header(GContext *ctx, const Layer *layer, uint16_t section_idx, void *cb_ctx) {
+	char *title = "Section";
+	menu_cell_title_draw(ctx, layer, title);
 }
 static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *cell_idx, void *cb_ctx) {
+	char *title = "Title", *subtitle = "Subtitle";
+	GBitmap *icon = NULL;
+	menu_cell_basic_draw(ctx, layer, title, subtitle, icon);
 }
 static uint16_t menu_get_num_sections(struct MenuLayer *ml, void *ctx) {
+	return 1;
 }
 static uint16_t menu_get_num_rows(struct MenuLayer *ml, uint16_t section_idx, void *cb_ctx) {
+	return 1;
 }
 static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx) {
 }
 
 static void window_load(Window *wnd) {
 	Layer *root = window_get_root_layer(wnd);
-	GRect bounds = layer_get_bounds(wnd_layer);
+	GRect bounds = layer_get_bounds(root);
 
 	menu = menu_layer_create(bounds);
 	menu_layer_set_callbacks(menu, NULL, (MenuLayerCallbacks) {
