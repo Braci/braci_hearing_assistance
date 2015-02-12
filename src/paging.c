@@ -1,5 +1,6 @@
 #include "paging.h"
 #include "events.h"
+#include "splash.h"
 
 static Window *wnd;
 static MenuLayer *menu;
@@ -51,8 +52,8 @@ static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx
 	}
 
 	int event = PAGING_INDICES[idx->row];
-	// TODO: send event
-	window_stack_remove(wnd, false);
+	splash_send(event);
+	window_stack_remove(wnd, false); // silently hide window while splash is showing
 }
 
 static void window_load(Window *wnd) {
