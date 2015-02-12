@@ -4,7 +4,7 @@
 // Available: 10, 25, 50 or 100 hz
 #define SAMPLING_RATE ACCEL_SAMPLING_10HZ
 #define NUM_SAMPLES 2
-#define ACCEL_THRESHOLD 1800
+#define ACCEL_THRESHOLD 2500
 #define mod(x) (x>0?x:-x)
 
 static void accel_handler(AccelData *data, uint32_t num_samples) {
