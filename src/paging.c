@@ -43,6 +43,7 @@ static void window_load(Window *wnd) {
 		.get_num_rows = menu_get_num_rows,
 		.select_click = menu_select_click,
 	});
+	menu_layer_set_click_config_onto_window(menu, wnd);
 	layer_add_child(root, menu_layer_get_layer(menu));
 }
 static void window_unload(Window *wnd) {
