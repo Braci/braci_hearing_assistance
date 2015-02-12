@@ -14,9 +14,6 @@ static Layer *window_layer;
 
 static GBitmap *image;
 
-static AppSync sync;
-static uint8_t sync_buffer[32];
-
 static uint32_t segments[] = {
 	200, 200, 200, 200, 200, 200,
 	200, 200, 200, 200, 200, 200,
@@ -35,32 +32,21 @@ enum NotifyKey {
 	NOTIFY_TEXT_KEY = 0x1,  // TUPLE_CSTRING
 };
 
-static void sync_error_callback(DictionaryResult dict_error, AppMessageResult app_message_error, void *context) {
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sync Error: %d", app_message_error);
-}
-
 static void inbox_received_callback(DictionaryIterator *iter, void *ctx) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Inbox received!");
-}
-static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "Got new tuple: %d", new_tuple->value->uint8);
 
-	unsigned int i = 0;
-	if(new_tuple->value->uint8 == 100)
-	{
-		return;
-	}
+	Tuple *new_tuple = dict_find(iter, NOTIFY_ICON_KEY);
+
 	if(new_tuple->value->uint8 == 101)
 	{
 		vibes_cancel();
 		vibes_short_pulse();
-		// window_unload();
 		const bool animated = true;
 		window_stack_remove(window, animated);
 		return;
 	}
 
-	for (i = 0; i < ARRAY_LENGTH(segments); i++)
+	for (unsigned int i = 0; i < ARRAY_LENGTH(segments); i++)
 	{
 		segments[i] = VIBRATION_PATTERNS[new_tuple->value->uint8][i % 2];
 	}
@@ -159,13 +145,6 @@ static void window_unload() {
 static void init() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "init: hello");
 
-	// Initializing app_sync:
-	Tuplet initial_values[] = {
-		TupletInteger(NOTIFY_ICON_KEY, (uint8_t) 100),
-	};
-	app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
-		sync_tuple_changed_callback, sync_error_callback, NULL);
-
 	const int inbound_size = 64;
 	const int outbound_size = 16;
 	app_message_open(inbound_size, outbound_size);
@@ -207,7 +186,6 @@ static void init() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "init: done");
 }
 static void deinit(void) {
-	app_sync_deinit(&sync);
 	app_message_deregister_callbacks();
 
 	paging_deinit();
