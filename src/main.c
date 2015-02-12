@@ -230,6 +230,7 @@ static void init() {
 
 	countdown_init();
 	accel_init();
+	paging_init();
 
 	window = window_create();
 	//  window_set_background_color(window, GColorBlack);
@@ -247,6 +248,7 @@ static void deinit(void) {
 	app_sync_deinit(&sync);
 	app_message_deregister_callbacks();
 
+	paging_deinit();
 	accel_deinit();
 	countdown_deinit();
 
