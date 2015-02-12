@@ -19,6 +19,9 @@ static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *idx, voi
 				NULL);
 	}
 }
+static int16_t menu_get_header_height(struct MenuLayer *ml, uint16_t section_idx, void *cb_ctx) {
+	return MENU_CELL_BASIC_HEADER_HEIGHT;
+}
 static uint16_t menu_get_num_sections(struct MenuLayer *ml, void *ctx) {
 	return 2;
 }
@@ -39,6 +42,7 @@ static void window_load(Window *wnd) {
 	menu_layer_set_callbacks(menu, NULL, (MenuLayerCallbacks) {
 		.draw_header = menu_draw_header,
 		.draw_row = menu_draw_row,
+		.get_header_height = menu_get_header_height,
 		.get_num_sections = menu_get_num_sections,
 		.get_num_rows = menu_get_num_rows,
 		.select_click = menu_select_click,
