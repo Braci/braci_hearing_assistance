@@ -31,7 +31,12 @@ void splash_send(int event) {
 	event_to_send = event;
 	window_stack_push(wnd, true);
 
-	// TODO: send
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Sending event %d", event);
+	// Now send the message to phone
+	DictionaryIterator *iter;
+	app_message_outbox_begin(&iter);
+	dict_write_uint16(iter, 0, event);
+	app_message_outbox_send();
 }
 
 void splash_init() {
