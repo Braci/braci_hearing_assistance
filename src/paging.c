@@ -45,6 +45,8 @@ static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx
 			APP_LOG(APP_LOG_LEVEL_DEBUG, "Launching worker");
 			app_worker_launch();
 		}
+		psleep(100); // for worker to stop/launch; FIXME: it's dirty!
+		menu_layer_reload_data(ml);
 		return;
 	}
 
