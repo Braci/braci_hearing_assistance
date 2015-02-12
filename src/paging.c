@@ -38,7 +38,13 @@ static uint16_t menu_get_num_rows(struct MenuLayer *ml, uint16_t section_idx, vo
 }
 static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx) {
 	if(idx->section == 1) {
-		// TODO: toggle fall detection
+		if(app_worker_is_running()) {
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "Stopping worker");
+			app_worker_kill();
+		} else {
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "Launching worker");
+			app_worker_launch();
+		}
 		return;
 	}
 
