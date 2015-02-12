@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include "accel.h"
 #include "countdown.h"
+#include "paging.h"
 
 static Window *window;
 
