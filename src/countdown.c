@@ -28,7 +28,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 			splash_send(EVENT_SOS);
 			window_stack_remove(wnd, false); // substitute this window with splash
-			// FIXME: removed unneeded "minus" code
 		}
 	}
 }
