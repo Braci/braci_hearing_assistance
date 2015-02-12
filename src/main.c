@@ -14,6 +14,8 @@ static Layer *window_layer;
 
 static GBitmap *image;
 
+static AppTimer *timer = NULL;
+
 static uint32_t segments[] = {
 	200, 200, 200, 200, 200, 200,
 	200, 200, 200, 200, 200, 200,
@@ -36,6 +38,9 @@ static void inbox_received_callback(DictionaryIterator *iter, void *ctx) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Inbox received!");
 
 	Tuple *new_tuple = dict_find(iter, NOTIFY_ICON_KEY);
+
+	if(timer)
+		app_timer_cancel(timer); // cancel timeout, as we got message and will show it now
 
 	if(new_tuple->value->uint8 == 101)
 	{
@@ -65,6 +70,16 @@ static void inbox_received_callback(DictionaryIterator *iter, void *ctx) {
 	// The bitmap layer holds the image for display
 	bitmap_layer_set_bitmap(image_layer, image);
 	text_layer_set_text(temperature_layer, NOTIFY_TEXTS[new_tuple->value->uint8]);
+	if(timer) {
+		window_stack_push(window, true);
+		timer = NULL;
+	}
+}
+
+static void timer_callback(void *data) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Timer fired");
+	window_stack_push(window, true);
+	timer = NULL;
 }
 
 void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
@@ -173,6 +188,7 @@ static void init() {
 			break;
 
 		case APP_LAUNCH_PHONE:
+			timer = app_timer_register(1000, timer_callback, NULL);
 			// either incoming message or launched from debug console
 			window_stack_push(window, true);
 			break;
