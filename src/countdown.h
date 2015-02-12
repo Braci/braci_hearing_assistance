@@ -8,4 +8,4 @@
 
 void countdown_init();
 void countdown_deinit();
-void countdown_start(int event, bool immediately);
+void countdown_start();
