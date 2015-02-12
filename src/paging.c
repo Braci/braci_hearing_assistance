@@ -6,7 +6,7 @@ static MenuLayer *menu;
 
 static void menu_draw_header(GContext *ctx, const Layer *layer, uint16_t section_idx, void *cb_ctx) {
 	char *title = "Section";
-	menu_cell_title_draw(ctx, layer, title);
+	menu_cell_basic_header_draw(ctx, layer, title);
 }
 static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *idx, void *cb_ctx) {
 	if(idx->section == 0) {
