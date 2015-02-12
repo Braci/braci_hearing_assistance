@@ -155,29 +155,32 @@ static void init() {
 	accel_init();
 	paging_init();
 
+	window = window_create();
+	//  window_set_background_color(window, GColorBlack);
+	window_set_fullscreen(window, true);
+	window_set_window_handlers(window, (WindowHandlers) {
+		.load = window_load,
+		.unload = window_unload
+	});
+
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Launch reason: %d", launch_reason());
 
 	switch(launch_reason()) {
-		case APP_LAUNCH_PHONE:
-			// TODO: incoming message -> avoid splash screen?
 		case APP_LAUNCH_SYSTEM:
 		case APP_LAUNCH_USER:
 		case APP_LAUNCH_QUICK_LAUNCH:
-			window = window_create();
-			//  window_set_background_color(window, GColorBlack);
-			window_set_fullscreen(window, true);
-			window_set_window_handlers(window, (WindowHandlers) {
-				.load = window_load,
-				.unload = window_unload
-			});
-
-			const bool animated = true;
-			window_stack_push(window, animated);
-
+			paging_open();
 			break;
+
+		case APP_LAUNCH_PHONE:
+			// either incoming message or launched from debug console
+			window_stack_push(window, true);
+			break;
+
 		case APP_LAUNCH_WORKER:
 			accel_user_falldown();
 			break;
+
 		default:
 			APP_LOG(APP_LOG_LEVEL_DEBUG, "Unknown launch reason!");
 			break;
