@@ -5,8 +5,9 @@ static Window *wnd;
 static MenuLayer *menu;
 
 static void menu_draw_header(GContext *ctx, const Layer *layer, uint16_t section_idx, void *cb_ctx) {
-	char *title = "Section";
-	menu_cell_basic_header_draw(ctx, layer, title);
+	if(section_idx == 0)
+		return;
+	menu_cell_basic_header_draw(ctx, layer, "Settings");
 }
 static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *idx, void *cb_ctx) {
 	if(idx->section == 0) {
@@ -20,7 +21,10 @@ static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *idx, voi
 	}
 }
 static int16_t menu_get_header_height(struct MenuLayer *ml, uint16_t section_idx, void *cb_ctx) {
-	return MENU_CELL_BASIC_HEADER_HEIGHT;
+	if(section_idx == 0)
+		return 0;
+	else
+		return MENU_CELL_BASIC_HEADER_HEIGHT;
 }
 static uint16_t menu_get_num_sections(struct MenuLayer *ml, void *ctx) {
 	return 2;
