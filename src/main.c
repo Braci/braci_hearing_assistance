@@ -199,13 +199,9 @@ static void deinit(void) {
 }
 
 int main(void) {
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "main: before init()");
 	init();
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "main: before app_event_loop()");
 
 	app_event_loop();
 
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "main: before deinit()");
 	deinit();
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "main: done");
 }
