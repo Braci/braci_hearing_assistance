@@ -33,6 +33,7 @@ static void window_load(Window *wnd) {
 		.get_num_rows = menu_get_num_rows,
 		.select_click = menu_select_click,
 	});
+	layer_add_child(root, menu_layer_get_layer(menu));
 }
 static void window_unload(Window *wnd) {
 	menu_layer_destroy(menu);
