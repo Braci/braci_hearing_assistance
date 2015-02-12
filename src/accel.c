@@ -27,8 +27,10 @@ bool accel_is_started() {
 }
 
 void accel_pause() {
+	app_worker_send_message(1, NULL);
 }
 void accel_unpause() {
+	app_worker_send_message(2, NULL);
 }
 
 void accel_init() {

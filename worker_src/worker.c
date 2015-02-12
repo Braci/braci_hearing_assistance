@@ -7,6 +7,17 @@
 #define ACCEL_THRESHOLD 1800
 #define mod(x) (x>0?x:-x)
 
+static void message_handler(uint16_t type, AppWorkerMessage *data) {
+	if(type == 1) { // pause
+		accel_data_service_unsubscribe();
+	} else if(type == 2) { // unpause
+		accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
+		accel_service_set_sampling_rate(SAMPLING_RATE);
+	} else { // unknown?
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Unknown message from app: %d", type);
+	}
+}
+
 void accel_handler(AccelData *data, uint32_t num_samples) {
 	if(data->did_vibrate)
 		return; // don't trust such data!
@@ -30,6 +41,7 @@ void accel_handler(AccelData *data, uint32_t num_samples) {
 
 static void init() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Worker: init()");
+	app_worker_message_subscribe(message_handler);
 	accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
 	accel_service_set_sampling_rate(SAMPLING_RATE);
 }
@@ -37,6 +49,7 @@ static void init() {
 static void deinit() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Worker: deinit()");
 	accel_data_service_unsubscribe();
+	app_worker_message_unsubscribe();
 }
 
 int main(void) {
