@@ -1,4 +1,5 @@
 #include "paging.h"
+#include "events.h"
 
 static Window *wnd;
 static MenuLayer *menu;
@@ -7,16 +8,25 @@ static void menu_draw_header(GContext *ctx, const Layer *layer, uint16_t section
 	char *title = "Section";
 	menu_cell_title_draw(ctx, layer, title);
 }
-static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *cell_idx, void *cb_ctx) {
-	char *title = "Title", *subtitle = "Subtitle";
-	GBitmap *icon = NULL;
-	menu_cell_basic_draw(ctx, layer, title, subtitle, icon);
+static void menu_draw_row(GContext *ctx, const Layer *layer, MenuIndex *idx, void *cb_ctx) {
+	if(idx->section == 0) {
+		menu_cell_basic_draw(ctx, layer,
+				NOTIFY_TEXTS[idx->row], NULL, NULL);
+	} else {
+		menu_cell_basic_draw(ctx, layer,
+				"Fall detection",
+				app_worker_is_running() ? "Enabled" : "Disabled",
+				NULL);
+	}
 }
 static uint16_t menu_get_num_sections(struct MenuLayer *ml, void *ctx) {
-	return 1;
+	return 2;
 }
 static uint16_t menu_get_num_rows(struct MenuLayer *ml, uint16_t section_idx, void *cb_ctx) {
-	return 1;
+	if(section_idx == 0)
+		return ARRAY_LENGTH(NOTIFY_TEXTS);
+	else
+		return 1;
 }
 static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx) {
 }
