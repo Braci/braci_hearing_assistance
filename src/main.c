@@ -3,6 +3,7 @@
 #include "countdown.h"
 #include "paging.h"
 #include "events.h"
+#include "splash.h"
 
 static Window *window;
 
@@ -168,6 +169,7 @@ static void init() {
 	const int outbound_size = 16;
 	app_message_open(inbound_size, outbound_size);
 
+	splash_init();
 	countdown_init();
 	accel_init();
 	paging_init();
@@ -191,6 +193,7 @@ static void deinit(void) {
 	paging_deinit();
 	accel_deinit();
 	countdown_deinit();
+	splash_deinit();
 
 	if(window){
 		window_destroy(window);
