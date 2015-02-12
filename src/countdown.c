@@ -1,5 +1,7 @@
 #include "countdown.h"
 #include "accel.h"
+#include "splash.h"
+#include "events.h"
 
 static Window *wnd;
 static TextLayer *tl_head, *tl_count, *tl_bottom;
@@ -23,12 +25,10 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 			window_stack_remove(wnd, true);
 		} else { // countdown done, do action and wait for delay
 			vibes_double_pulse();
-			// TODO: action here
 
-			count = -COUNTDOWN_MESSAGE_DELAY;
-			text_layer_set_text(tl_head, "Sending SOS now");
-			text_layer_set_text(tl_count, "");
-			text_layer_set_text(tl_bottom, "");
+			splash_send(EVENT_SOS);
+			window_stack_remove(wnd, false); // substitute this window with splash
+			// FIXME: removed unneeded "minus" code
 		}
 	}
 }
