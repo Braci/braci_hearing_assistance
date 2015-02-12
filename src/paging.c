@@ -36,6 +36,13 @@ static uint16_t menu_get_num_rows(struct MenuLayer *ml, uint16_t section_idx, vo
 		return 1;
 }
 static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx) {
+	if(idx->section == 1) {
+		// TODO: toggle fall detection
+		return;
+	}
+
+	int event = idx->row;
+	// TODO: send
 }
 
 static void window_load(Window *wnd) {
