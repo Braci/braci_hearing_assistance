@@ -1,13 +1,18 @@
 #include "accel.h"
 #include "countdown.h"
 
-void worker_message_handler(uint16_t type, AppWorkerMessage *data) {
+void accel_user_falldown() {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "USER FALLEN DOWN!");
+	countdown_start();
+	vibes_double_pulse();
+}
+
+static void worker_message_handler(uint16_t type, AppWorkerMessage *data) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Got message from worker, type = %d", type);
-	if(type == 0) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "USER FALLEN DOWN!");
-		countdown_start();
-		vibes_double_pulse();
-	}
+	if(type == 0)
+		accel_user_falldown();
+	else
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Unknown message from worker");
 }
 
 void accel_start() {

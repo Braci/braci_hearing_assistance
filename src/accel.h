@@ -9,3 +9,5 @@ void accel_stop();
 bool accel_is_running();
 void accel_pause();
 void accel_unpause();
+
+void accel_user_falldown();
