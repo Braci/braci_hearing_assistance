@@ -42,7 +42,8 @@ static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx
 	}
 
 	int event = idx->row;
-	// TODO: send
+	// TODO: send event
+	window_stack_remove(wnd, false);
 }
 
 static void window_load(Window *wnd) {
