@@ -188,7 +188,8 @@ static void init() {
 			break;
 
 		case APP_LAUNCH_PHONE:
-			timer = app_timer_register(1000, timer_callback, NULL);
+			//timer = app_timer_register(1000, timer_callback, NULL);
+			window_stack_push(window, true);
 			// either incoming message or launched from debug console
 			break;
 
@@ -220,10 +221,13 @@ int main(void) {
 	init();
 
 	app_event_loop();
+	/*
+	// This trick seems to break something in the system... so disabling it for now
 	while(timer) { // launch not finished yet! so if evt loop stopped (because of no windows are active), relaunch it
 		psleep(10);
 		app_event_loop();
 	}
+	*/
 
 	deinit();
 }
