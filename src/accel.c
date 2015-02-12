@@ -1,5 +1,6 @@
 #include "accel.h"
 #include "countdown.h"
+#include "events.h"
 
 static void accel_handler(AccelData *data, uint32_t num_samples) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "%d %ld %d %d %d", data->did_vibrate, (long)data->timestamp,
@@ -11,7 +12,7 @@ static void accel_handler(AccelData *data, uint32_t num_samples) {
 			mod(data->y) > ACCEL_THRESHOLD ||
 			mod(data->z) > ACCEL_THRESHOLD) {
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "USER FALLEN DOWN!");
-		countdown_start();
+		countdown_start(EVENT_SOS, false);
 		vibes_double_pulse();
 	}
 }
