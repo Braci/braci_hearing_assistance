@@ -32,7 +32,7 @@ static uint16_t menu_get_num_sections(struct MenuLayer *ml, void *ctx) {
 }
 static uint16_t menu_get_num_rows(struct MenuLayer *ml, uint16_t section_idx, void *cb_ctx) {
 	if(section_idx == 0)
-		return ARRAY_LENGTH(PAGING_INDICES);
+		return PAGING_INDICES_COUNT;
 	else
 		return 1;
 }
