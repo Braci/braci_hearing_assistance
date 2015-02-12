@@ -1,6 +1,8 @@
 #include "accel.h"
 #include "countdown.h"
 
+AppWorkerMessage msg = {0,0,0};
+
 void accel_user_falldown() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "USER FALLEN DOWN!");
 	countdown_start();
@@ -27,10 +29,10 @@ bool accel_is_started() {
 }
 
 void accel_pause() {
-	app_worker_send_message(1, NULL);
+	app_worker_send_message(1, &msg);
 }
 void accel_unpause() {
-	app_worker_send_message(2, NULL);
+	app_worker_send_message(2, &msg);
 }
 
 void accel_init() {
