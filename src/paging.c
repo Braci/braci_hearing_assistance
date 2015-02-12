@@ -1,5 +1,6 @@
 #include "paging.h"
 #include "events.h"
+#include "countdown.h"
 
 static Window *wnd;
 static MenuLayer *menu;
@@ -42,7 +43,7 @@ static void menu_select_click(struct MenuLayer *ml, MenuIndex *idx, void *cb_ctx
 	}
 
 	int event = idx->row;
-	// TODO: send
+	countdown_start(event, true);
 }
 
 static void window_load(Window *wnd) {
