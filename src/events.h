@@ -21,6 +21,8 @@ static uint32_t NOTIFY_ICONS[] = {
 	RESOURCE_ID_IMAGE_POLICE,
 };
 
+#define EVENT_SOS 9
+
 static char NOTIFY_TEXTS[][30] = {
 	"Fire Alarm",
 	"Doorbell",
