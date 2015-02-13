@@ -82,7 +82,7 @@ static void timer_callback(void *data) {
 	timer = NULL;
 }
 
-void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
+static void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
 	if (iter) {
@@ -98,24 +98,12 @@ void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 	const bool animated = true;
 	window_stack_remove(window, animated);
 }
-void up_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
-	if(app_worker_is_running()) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "Stopping worker");
-		app_worker_kill();
-	} else {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "Launching worker");
-		app_worker_launch();
-	}
-}
-void select_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
-	paging_open();
-}
 
 void click_config_provider(void *context) {
 	window_single_click_subscribe(BUTTON_ID_BACK, any_button_single_click_handler);
 	window_single_click_subscribe(BUTTON_ID_DOWN, any_button_single_click_handler);
-	window_single_click_subscribe(BUTTON_ID_UP, up_button_single_click_handler);
-	window_single_click_subscribe(BUTTON_ID_SELECT, select_button_single_click_handler);
+	window_single_click_subscribe(BUTTON_ID_UP, any_button_single_click_handler);
+	window_single_click_subscribe(BUTTON_ID_SELECT, any_button_single_click_handler);
 }
 
 static void window_load(Window *window) {
