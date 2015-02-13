@@ -7,13 +7,17 @@
 #define ACCEL_THRESHOLD 2500
 #define mod(x) (x>0?x:-x)
 
+static bool is_fall(int x, int y, int z) {
+	return mod(data->x) > ACCEL_THRESHOLD ||
+			mod(data->y) > ACCEL_THRESHOLD ||
+			mod(data->z) > ACCEL_THRESHOLD;
+}
+
 static void accel_handler(AccelData *data, uint32_t num_samples) {
 	if(data->did_vibrate)
 		return; // don't trust such data!
 
-	if(mod(data->x) > ACCEL_THRESHOLD ||
-			mod(data->y) > ACCEL_THRESHOLD ||
-			mod(data->z) > ACCEL_THRESHOLD) {
+	if(is_fall(data->x, data->y, data->z)) {
 		// Send a message in case the app is already started...
 		AppWorkerMessage msg = {
 			.data0 = (uint16_t)data->x,
@@ -24,8 +28,6 @@ static void accel_handler(AccelData *data, uint32_t num_samples) {
 		// ...or start the app, if it was not running
 		worker_launch_app();
 	}
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "%d %ld %d %d %d", data->did_vibrate, (long)data->timestamp,
-			data->x, data->y, data->z);
 }
 
 static void message_handler(uint16_t type, AppWorkerMessage *data) {
