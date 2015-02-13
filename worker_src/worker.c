@@ -32,8 +32,9 @@ float oix=0, oiy=0, oiz=0;
 static void init_detector() {
 }
 static bool is_fall(float x, float y, float z, long time) {
+	float norm = 0;
 	if(otime) {
-		float norm = my_sqrt(x*x + y*y + z*z);
+		norm = my_sqrt(x*x + y*y + z*z);
 
 		if(norm < 9.79) { // calculate integral
 			float dtime = (time - otime) * 1000; // seconds since previous check
@@ -41,7 +42,6 @@ static bool is_fall(float x, float y, float z, long time) {
 			v1 = v1 + (norm - 9.81) / dtime;
 			
 			float ix = oix + x/dtime;
-			v2 = v2 + my_sqrt(sq(oix+
 		} else { // damp
 			v1 = v1 * 0.95;
 		}
@@ -50,14 +50,14 @@ static bool is_fall(float x, float y, float z, long time) {
 	ox = x; oy = y; oz = z;
 	onorm = norm;
 
-	return false;
+	return norm < 0.46 && v1 > 1.72;
 }
 
 static void accel_handler(AccelData *data, uint32_t num_samples) {
 	if(data->did_vibrate)
 		return; // don't trust such data!
 
-	if(is_fall(((float)data->x)/100, ((float)data->y)/100, ((float)data->z)/100), data->timestamp) {
+	if(is_fall(((float)data->x)/100, ((float)data->y)/100, ((float)data->z)/100, data->timestamp)) {
 		// Send a message in case the app is already started...
 		AppWorkerMessage msg = {
 			.data0 = (uint16_t)data->x,
