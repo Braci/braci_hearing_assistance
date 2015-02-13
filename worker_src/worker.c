@@ -5,8 +5,6 @@
 #define SAMPLING_RATE ACCEL_SAMPLING_25HZ
 // how many samples to approximate before calling our handler
 #define NUM_SAMPLES 1
-// how many results to cache
-#define INTEGRAL_LEN 20
 #define ACCEL_THRESHOLD 2500
 #define mod(x) (x>0?x:-x)
 
@@ -22,36 +20,35 @@ static float my_sqrt(float x) {
 	}
 	return a;
 }
+static float sq(float x) {
+	return x*x;
+}
 
-int cpos = 0;
-// x, y, z, norm, v1, v2
-static float coords[INTEGRAL_LEN][4];
 long otime = 0;
-float ox=0, oy=0, oz=0, on=0; // previous values
+float ox=0, oy=0, oz=0, onorm=0; // previous values
 float v1=0, v2=0;
+float oix=0, oiy=0, oiz=0;
 
 static void init_detector() {
-	for(int i=0; i<INTEGRAL_LEN; i++)
-		for(int j=0; j<4; j++)
-			coords[i][j] = 0;
 }
 static bool is_fall(float x, float y, float z, long time) {
-	coords[cpos][0] = x;
-	coords[cpos][1] = y;
-	coords[cpos][2] = z;
-	float norm = my_sqrt(x*x + y*y + z*z);
-	coords[cpos][3] = norm;
+	if(otime) {
+		float norm = my_sqrt(x*x + y*y + z*z);
 
-	float v1, v2;
-	if(norm < 9.79) { // calculate integral
-		v1 = (norm - 9.81) 
-	} else { // damp
-		v1 = v1 * 0.95;
+		if(norm < 9.79) { // calculate integral
+			float dtime = (time - otime) * 1000; // seconds since previous check
+
+			v1 = v1 + (norm - 9.81) / dtime;
+			
+			float ix = oix + x/dtime;
+			v2 = v2 + my_sqrt(sq(oix+
+		} else { // damp
+			v1 = v1 * 0.95;
+		}
 	}
-
-	cpos++;
-	if(cpos>=INTEGRAL_LEN)
-		cpos = 0;
+	otime = time;
+	ox = x; oy = y; oz = z;
+	onorm = norm;
 
 	return false;
 }
