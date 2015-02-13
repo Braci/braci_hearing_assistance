@@ -24,7 +24,60 @@ static float sq(float x) {
 	return x*x;
 }
 
+static int state = 0, count = 0;
+static long start = 0;
+
 static bool is_fall(float x, float y, float z, long time) {
+	float norm = my_sqrt(x*x + y*y + z*z);
+	long diff = start - time;
+
+	if(state == 0) { // normal / waiting for fall
+		if(norm < 3) { // free fall
+			start = time;
+			state = 1;
+			count = 1;
+		}
+	} else if(state == 1) { // freefall
+		if(diff > 1000) {
+			state = 0;
+		} else {
+			if(norm < 3) // still falling
+				count++;
+			else
+				state = 0; // not continuous -> not a fall
+			if(count > 3) { // falling long enough
+				count = 0;
+				state = 2;
+			}
+		}
+	} else if(state == 2) { // between freefall and impact
+		if(diff > 2000) {
+			state = 0; // too many time
+		} else if(norm > 13) { // impact detected
+			//start = time; // reset time
+			state = 3;
+		}
+	} else if(state == 3) { // between impact and silence
+		if(diff > 7000) {
+			state = 0;
+		} else if(9 < norm && norm < 11) { // stable
+			//start = time; // reset time
+			state = 4;
+			count = 1;
+		}
+	} else if(state == 4) { // silence
+		if(9 < norm && norm < 11) { // still stable
+			count++;
+			if(diff > 10000 || count > 50) { // silent for long enough
+				state = 0;
+				return true; // fall detected!
+			}
+		} else { // this was not a silence yet!
+			start = time; // reset time
+			state = 3;
+		}
+	}
+
 	return false;
 }
 
