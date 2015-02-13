@@ -85,7 +85,7 @@ static void timer_callback(void *data) {
 void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
-	Tuplet symbol_tuple = TupletInteger(0, 1);
+	Tuplet symbol_tuple = TupletInteger(0, 1000);
 	if (iter == NULL) {
 		return;
 	}
