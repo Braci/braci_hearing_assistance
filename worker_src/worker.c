@@ -24,33 +24,8 @@ static float sq(float x) {
 	return x*x;
 }
 
-long otime = 0;
-float ox=0, oy=0, oz=0, onorm=0; // previous values
-float v1=0, v2=0;
-float oix=0, oiy=0, oiz=0;
-
-static void init_detector() {
-}
 static bool is_fall(float x, float y, float z, long time) {
-	float norm = 0;
-	if(otime) {
-		norm = my_sqrt(x*x + y*y + z*z);
-
-		if(norm < 9.79) { // calculate integral
-			float dtime = (time - otime) * 1000; // seconds since previous check
-
-			v1 = v1 + (norm - 9.81) / dtime;
-			
-			float ix = oix + x/dtime;
-		} else { // damp
-			v1 = v1 * 0.95;
-		}
-	}
-	otime = time;
-	ox = x; oy = y; oz = z;
-	onorm = norm;
-
-	return norm < 0.46 && v1 > 1.72;
+	return false;
 }
 
 static void accel_handler(AccelData *data, uint32_t num_samples) {
@@ -83,7 +58,6 @@ static void message_handler(uint16_t type, AppWorkerMessage *data) {
 
 static void init() {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Worker: init()");
-	init_detector();
 	app_worker_message_subscribe(message_handler);
 	accel_data_service_subscribe(NUM_SAMPLES, accel_handler);
 	accel_service_set_sampling_rate(SAMPLING_RATE);
