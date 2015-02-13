@@ -85,19 +85,16 @@ static void timer_callback(void *data) {
 void any_button_single_click_handler(ClickRecognizerRef recognizer, void *ctx) {
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
-	Tuplet symbol_tuple = TupletInteger(0, 1000);
-	if (iter == NULL) {
-		return;
+	if (iter) {
+		dict_write_uint16(iter, 0, 1000);
+		app_message_outbox_send();
+
+		vibes_cancel();
+		vibes_short_pulse();
+	} else {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Couldn't initialize outbox sending");
 	}
 
-	dict_write_tuplet(iter, &symbol_tuple);
-	dict_write_end(iter);
-	app_message_outbox_send();
-
-	vibes_cancel();
-	vibes_short_pulse();
-
-//	window_unload();
 	const bool animated = true;
 	window_stack_remove(window, animated);
 }
